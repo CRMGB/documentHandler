@@ -4,17 +4,14 @@
 {% load static %}
 
 <section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
-  {% if form_errors %}
-  <p>Found errors on line {{ row_count }}:<p>
-  <ul>
-  {% for field, errors in form_errors.items %}
-      {% for error in errors %}
-        <li> {{field}}: {{ error }} </li>
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
       {% endfor %}
-  {% endfor %}
-  {% elif row_count %}
-    <p>Successfully uploaded {{ row_count}} row(s)! 🥳</p>
-  {% endif %}  
+  </ul>
+  {% endif %}{% if messages %}
+{% endif %} 
   <form method="POST" enctype="multipart/form-data" class="form-horizontal"> 
     {% csrf_token %}
     <div class="form-group">
