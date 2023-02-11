@@ -1,32 +1,12 @@
 {% extends "main.html" %}
+{% load django_tables2 %}
 
 {% block content %}
 {% load static %}
 
 <section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
-    <table id="table" class="display" style="width: 100%;">
-        <h3>Found {{row_count}} rows</h3>
-        <thead>
-          <tr>
-            {% for header in headers %}
-            <th>{{ header.name }}</th>
-            {% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {% for row in data %}
-            <td>{{ row.created }}</td>
-            <td>{{ row.updated }}</td>
-            <td>{{ row.book_title }}</td>
-            <td>{{ row.book_author }}</td>
-            <td>{{ row.publisher_name }}</td>
-            <td>{{ row.date_published }}</td>
-            <td>{{ row.book_id }}</td>
-            {% endfor %}
-          </tr>
-        </tbody>
-      </table>
+      <h3>Found {{row_count}} rows</h3>
+        {% render_table table %}
 </section>
 {% load static %}
 {% endblock content %}

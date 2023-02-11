@@ -1,5 +1,6 @@
 from django.forms import FileField, Form, ModelForm
 from .models import UploadCSVFileModel
+import django_tables2 as tables
 
 
 class UploadCSVFileForm(ModelForm):
@@ -9,4 +10,9 @@ class UploadCSVFileForm(ModelForm):
 
 class UploadCSVForm(Form):
     csv_file = FileField()
-    # id = forms.UUIDField()
+
+
+class SimpleTable(tables.Table):
+    class Meta:
+        model = UploadCSVFileModel
+        attrs = {'class': 'table table-striped table-hover'}

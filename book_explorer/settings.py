@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
+from django.utils.translation import gettext
+django.utils.translation.ugettext = gettext
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,6 +29,8 @@ SECRET_KEY = 'django-insecure-!5olh1ex7wp_2j_&fsc2x6)iwdl=tk7$7e_w5)59tm2^a+hh)9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 ALLOWED_HOSTS = ['0.0.0.0', "localhost"]
 
@@ -41,6 +47,7 @@ INSTALLED_APPS = [
     'userManagement',
     'fileManagement',
     'crispy_forms',
+    'django_tables2',
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
