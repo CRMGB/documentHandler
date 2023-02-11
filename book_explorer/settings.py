@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!5olh1ex7wp_2j_&fsc2x6)iwdl=tk7$7e_w5)59tm2^a+hh)9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', "localhost"]
 
 
 # Application definition
@@ -85,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'book_explorer',
-        'USER': 'bisby',
-        'PASSWORD': 'password12345',
+        'USER': 'book_user',
+        'PASSWORD': 'book_password',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -134,3 +134,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')

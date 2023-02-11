@@ -1,0 +1,63 @@
+#mainNav .navbar-brand {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: forestgreen;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif
+}
+
+#mainNav .navbar-brand:focus,
+#mainNav .navbar-brand:hover {
+    color: forestgreen
+}
+
+#mainNav .navbar-nav>li.nav-item>a.nav-link,
+#mainNav .navbar-nav>li.nav-item>a.nav-link:focus {
+    font-size: .9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: black;
+}
+
+#mainNav .navbar-nav>li.nav-item>a.nav-link:focus:hover,
+#mainNav .navbar-nav>li.nav-item>a.nav-link:hover {
+    color:  #2757d1!important;
+}
+
+#mainNav .navbar-nav>li.nav-item>a.nav-link.active,
+#mainNav .navbar-nav>li.nav-item>a.nav-link:focus.active {
+    color: #2757d1 !important;
+}
+
+#mainNav .navbar-nav>li.nav-item>a.nav-link.active:hover,
+#mainNav .navbar-nav>li.nav-item>a.nav-link:focus.active:hover {
+    background-color: transparent
+}
+
+@media (min-width: 992px) {
+    #mainNav.navbar-shrink .navbar-nav>li.arrow>a.arrow1,
+    #mainNav.navbar-shrink .navbar-nav>li.arrow>a.arrow1:focus {
+        color: #3bd23b;
+    }
+}
+
+@media (min-width: 992px) {
+    #mainNav .navbar-nav>li.arrow>a.arrow1,
+    #mainNav .navbar-nav>li.arrow>a.arrow1:focus {
+        color: blue;
+    }
+}
+
+#mainNav .navbar-brand {
+    font-weight: 700;
+    font-size: 10px;
+    color: black;
+}
+
+.alert {
+    position: fixed!important;
+    bottom: 5px!important;
+    left:2%!important;
+    width: 96%!important;
+    background-color: lightblue;
+    width:100%; 
+}
