@@ -144,4 +144,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+USE_L10N = False
+
+#We are not sure wht dates we're getting in the date_published from the CSV
+DATE_INPUT_FORMATS = ('%d-%m-%Y', '%Y-%m-%d', '%Y/%m/%d', '%m/%d/%Y', '%d/%m/%Y', '%d/%m/%y', '%d %b %Y',
+                      '%d %b, %Y', '%d %b %Y', '%d %b, %Y', '%d %B, %Y',
+                      '%d %B %Y')
+DATETIME_INPUT_FORMATS = ('%d/%m/%Y %H:%M:%S', '%d/%m/%Y %H:%M', '%d/%m/%Y',
+                          '%d/%m/%y %H:%M:%S', '%d/%m/%y %H:%M', '%d/%m/%y',
+                          '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d')
