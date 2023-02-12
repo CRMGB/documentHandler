@@ -1,22 +1,27 @@
+import typing as t
 import uuid
+from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseRedirect
+from typing import Any
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.urls import reverse
 from django.views.generic.base import View
-from django.http import HttpResponseRedirect
+from book_explorer.fileManagement.aws_s3 import proccess_csv_to_s3
 from .models import UploadCSVFileModel
-from .forms import SimpleTable, UploadCSVFileForm, UploadCSVForm
+from .forms import SimpleTable, UploadCSVFileForm
 from csv import DictReader
 from io import TextIOWrapper
 CRITICAL = 50
 
+RedirectOrResponse = t.Union[HttpResponseRedirect, HttpResponse]
+
 class UploadView(View):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
         return render(request, "csv_upload.html", {"form": UploadCSVFileForm()})
 
-    def post(self, request):
+    def post(self, request: HttpRequest, *args: tuple[Any], 
+                **kwargs: dict[str, t.Union[int, str]])-> RedirectOrResponse:
         """ POST method to Handle the CSV upload, checks whether the id is unique,
             If there is not an error, save the content and display it in the csv_content template"""        
         csv_file = request.FILES["csv_file"]
@@ -35,6 +40,7 @@ class UploadView(View):
                 messages.add_message(request, CRITICAL, str(form.errors))
                 return redirect("csv_upload")
             form.save()
+        proccess_csv_to_s3(csv_file, row_count)
         csv_content = UploadCSVFileModel.objects.order_by('-updated')
         table = SimpleTable(csv_content)
         context = {'table': table, "row_count": str(row_count)}
