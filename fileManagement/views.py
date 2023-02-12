@@ -1,3 +1,4 @@
+import uuid
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -23,8 +24,11 @@ class UploadView(View):
         row_count = 0
         for row in DictReader(rows):
             row_count += 1
+            if is_valid_uuid(row.get("book_id"))==False:
+                messages.add_message(request, CRITICAL, f"The book with the id '{row['book_id']}' is wrong.")
+                return redirect("csv_upload")
             if UploadCSVFileModel.objects.filter(book_id=row.get("book_id")).exists():
-                messages.add_message(request, CRITICAL, f"The book with the id {row['book_id']} is already present in the database.")
+                messages.add_message(request, CRITICAL, f"The book with the id '{row['book_id']}' is already present in the database.")
                 return redirect("csv_upload")
             form = UploadCSVFileForm(row)
             if not form.is_valid():
@@ -35,3 +39,11 @@ class UploadView(View):
         table = SimpleTable(csv_content)
         context = {'table': table, "row_count": str(row_count)}
         return render(request, 'csv_content.html', context)
+
+
+def is_valid_uuid(val):
+    try:
+        uuid.UUID(str(val))
+        return True
+    except ValueError:
+        return False
