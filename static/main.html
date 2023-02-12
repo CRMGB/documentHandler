@@ -22,7 +22,7 @@
     {% include 'navbar.html' %} {% if messages %} {% for message in messages %}
     <div class="alert  alert--{{message.tags}}">
       <p class="alert__message">{{message}}</p>
-      <button class="alert__close">x</button>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     </div>
     {% endfor %} {% endif %} {% block content %} {% endblock content %}
   </body>
