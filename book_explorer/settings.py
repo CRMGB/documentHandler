@@ -20,7 +20,6 @@ django.utils.translation.ugettext = gettext
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -34,6 +33,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 ALLOWED_HOSTS = ['0.0.0.0', "localhost"]
 
+USE_TZ = False
 
 # Application definition
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'fileManagement',
     'crispy_forms',
     'django_tables2',
+    'storages',
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
@@ -134,7 +135,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
@@ -154,6 +155,8 @@ DATETIME_INPUT_FORMATS = ('%d/%m/%Y %H:%M:%S', '%d/%m/%Y %H:%M', '%d/%m/%Y',
                           '%d/%m/%y %H:%M:%S', '%d/%m/%y %H:%M', '%d/%m/%y',
                           '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d')
 
-AWS_STORAGE_BUCKET_NAME = ''
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_KEY = ''
+AWS_STORAGE_BUCKET_NAME = 'csv-django-book-explorer'
+AWS_ACCESS_KEY_ID = 'AKIA2SCTLX5V6JWWZLOS'
+AWS_SECRET_KEY = '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'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_REGION_NAME = 'eu-west-2'

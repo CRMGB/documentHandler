@@ -6,31 +6,42 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 from django.conf import settings
 
-def proccess_csv_to_s3(file, row_count):
-    """"""
+logger = logging.getLogger('mylogger')
+
+def upload_csv_to_s3(file, row_count):
+    """Create the file name and convet to bytesIO before uploading to S3"""
     id = uuid.uuid4()
-    now=datetime.datetime.now()
+    now = datetime.datetime.now()
     file_name_s3 = f"{id}_{row_count}_{now.strftime('%d-%m-%Y')}"
-    logging.info(f"Uploading the file '{file_name_s3}'")
-    save_csv_to_s3(file, file_name_s3)
+    logger.info(f"Uploading the file '{file_name_s3}'")
+    file_ready = get_ready_the_file(file)
+    save_csv_to_s3(file_ready, file_name_s3)
+
+def get_ready_the_file(file):
+    """Convert to ByesIO otherwise will be empty when downloading"""
+    file_to_upload = io.BytesIO()
+    for chunk in file:
+        # Cleanup junk
+        if str(chunk).startswith("b'---------") or str(chunk).startswith("b'Content-"):
+            continue
+        if chunk:
+            file_to_upload.write(chunk)
+    file_to_upload.seek(0)
+    return file_to_upload
 
 def save_csv_to_s3(file, file_name):
-    """Need to transform the files to BytesIO for S3"""
-    prefix = f"/"
-    file_aws = io.BytesIO()
-    for chunk in file:
-        file_aws.write(bytes([chunk]))
-    file_aws.seek(0)
+    """Method using Boto3 to upload the csv file."""
+    prefix = f"test"
     try:
         get_s3_creds(boto3.client).upload_fileobj(
-            file_aws,
+            file,
             settings.AWS_STORAGE_BUCKET_NAME,
-            f"{prefix}/{str(file_name)}",
+            f"{prefix}/{str(file_name)}.csv",
         )
-        logging.info("Upload Successful")
+        logger.info("Upload Successful")
         return True
     except NoCredentialsError:
-        logging.info("Credentials not available")
+        logger.info("Credentials not available")
         return False
 
 def get_s3_creds(boto3_action):
