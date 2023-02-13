@@ -7,3 +7,6 @@ To test heroku locally:
 Hosting url:
     - https://book-explorer.herokuapp.com/
 
+Run db:
+    - heroku run su - postgres
+
