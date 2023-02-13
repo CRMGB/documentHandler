@@ -29,7 +29,6 @@ decorator==4.4.2
 defer==1.0.4
 distlib==0.3.0
 distro==1.4.0
-distro-info===0.23ubuntu1
 dj-database-url==1.2.0
 Django==4.1
 django-bootstrap4==21.1
@@ -129,9 +128,7 @@ PyQt5==5.14.1
 pyRFC3339==1.1
 PySocks==1.6.8
 pytest==6.2.2
-python-apt==2.0.0+ubuntu0.20.4.4
 python-dateutil==2.7.3
-python-debian===0.1.36ubuntu1
 python-dotenv==0.21.1
 python-magic==0.4.16
 pytz==2021.1
