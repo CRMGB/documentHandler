@@ -16,3 +16,4 @@ class SimpleTable(tables.Table):
     class Meta:
         model = UploadCSVFileModel
         attrs = {'class': 'table table-striped table-hover'}
+        exclude = ["id"]
