@@ -13,11 +13,14 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import django
+from dotenv import load_dotenv
 import django_heroku
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
 from django.utils.translation import gettext
 django.utils.translation.ugettext = gettext
+env_path = Path('.', '.env')
+load_dotenv(dotenv_path=env_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!5olh1ex7wp_2j_&fsc2x6)iwdl=tk7$7e_w5)59tm2^a+hh)9'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = 'django-insecure-!5olh1ex7wp_2j_&fsc2x6)iwdl=tk7$7e_w5)59tm2^a+hh)9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -104,10 +108,10 @@ WSGI_APPLICATION = 'book_explorer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'book_explorer',
-        'USER': 'book_user',
-        'PASSWORD': 'book_password',
-        'HOST': 'localhost',
+        'NAME': os.environ.get('NAME'),
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('HOST'),
         'PORT': '',
     }
 }
