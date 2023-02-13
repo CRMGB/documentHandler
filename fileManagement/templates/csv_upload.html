@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% load static %}
+
+<section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
+  <form method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+        <div class="col-md-10">
+            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+        </div>                    
+    </div>
+    <div class="form-group">                    
+        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+             <button class="btn btn-primary" value="Submit" type="submit"> <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
+        </div> 
+    </div>
+    </form>
+</section>
+{% load static %}
+{% endblock content %}
