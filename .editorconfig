@@ -1,0 +1,43 @@
+root = true
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.py]
+indent_size = 4
+combine_as_imports = true
+max_line_length = 79
+multi_line_output = 4
+quote_type = single
+
+[*.js]
+indent_size = 2
+
+[*.{sass,scss,less}]
+indent_size = 2
+
+[*.yml]
+indent_size = 2
+
+[*.html]
+indent_size = 2
+
+[flake8]
+exclude = static,assets,logs,media,tests,node_modules,templates,*/migrations/*.py,urls.py,settings.py
+max-line-length = 79
+ignore =
+    E1101  # Instance has not member
+    C0111  # Missing class/method docsting
+    E1136  # Value is unsubscriptable
+    W0703  # Catching too general exception
+    C0103  # Variable name doesnt conform to snake_case naming style
+    C0330  # Wrong hanging indentation
+    W504   # Too few public methods
+
+[isort]
+skip = static,assets,logs,media,tests,node_modules,templates,docs,migrations,node_modules
+not_skip = __init__.py
+multi_line_output = 4

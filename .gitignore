@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+my_env/
+doc.pdf
+*.csv#
+static/admin/*
+static/django_tables2/*
+
