@@ -66,6 +66,7 @@ defusedxml==0.6.0
 diff-match-patch @ file:///tmp/build/80754af9/diff-match-patch_1594828741838/work
 distlib==0.3.6
 distributed @ file:///tmp/build/80754af9/distributed_1594750293818/work
+dj-database-url==1.2.0
 Django==3.2
 django-appconf==1.0.5
 django-audit-fields==0.3.9
@@ -78,9 +79,11 @@ django-extensions==3.2.1
 django-filter==2.3.0
 django-fontawesome==1.0
 django-fontawesome-5==1.0.18
+django-heroku==0.3.1
 django-ipware==4.0.2
 django-model-utils==4.2.0
 django-static-fontawesome==5.15.4.0
+django-storages==1.13.2
 django-tables2-bootstrap4==2.0.0b5
 django-utils-six==2.0
 djangorestframework==3.14.0
@@ -111,6 +114,7 @@ graphene-django==3.0.0b7
 graphql-core==3.2.3
 graphql-relay==3.2.0
 greenlet==0.4.16
+gunicorn==20.1.0
 h11==0.12.0
 h5py==2.10.0
 HeapDict==1.0.1
@@ -195,6 +199,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow @ file:///tmp/build/80754af9/pillow_1594307295532/work
 pipenv==2020.11.15
+pipfile==0.0.2
 pkginfo==1.5.0.1
 platformdirs==2.5.4
 pluggy==0.13.1
@@ -203,7 +208,7 @@ prometheus-client==0.8.0
 promise==2.3
 prompt-toolkit==3.0.5
 psutil==5.7.0
-psycopg2==2.9.5
+psycopg2==2.8.6
 ptyprocess==0.6.0
 py==1.10.0
 pyasn1==0.4.8
@@ -245,7 +250,7 @@ rfc3986==1.5.0
 rich==12.6.0
 rope==0.17.0
 Rtree==0.9.4
-ruamel-yaml==0.15.87
+ruamel_yaml==0.15.87
 s3transfer==0.6.0
 scikit-image==0.16.2
 scikit-learn @ file:///tmp/build/80754af9/scikit-learn_1592502866053/work
@@ -290,7 +295,7 @@ tornado==6.0.4
 tqdm @ file:///tmp/build/80754af9/tqdm_1593446365756/work
 traitlets==5.0.5
 typeguard==2.13.3
-typing-extensions==4.4.0
+typing_extensions==4.4.0
 ujson==1.35
 unicodecsv==0.14.1
 urllib3==1.25.9
@@ -314,7 +319,3 @@ zict==2.0.0
 zipp==3.1.0
 zope.event==4.4
 zope.interface==4.7.1
-boto3==1.26.59
-Django==4.1.5
-django-storages==1.13.2
-gunicorn==20.1.0
