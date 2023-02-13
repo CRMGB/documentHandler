@@ -22,6 +22,7 @@ django.utils.translation.ugettext = gettext
 env_path = Path('.', '.env')
 load_dotenv(dotenv_path=env_path)
 
+# PRODUCTION = os.environ.get('DATABASE_URL') != None
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,7 +108,7 @@ WSGI_APPLICATION = 'book_explorer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('NAME'),
         'USER': os.environ.get('USER'),
         'PASSWORD': os.environ.get('PASSWORD'),
