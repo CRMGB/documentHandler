@@ -2,12 +2,37 @@
     font-weight: 700;
     text-transform: uppercase;
     color: forestgreen;
-    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.fixed-top {
+    background-color: black;
+    color: white;
+}
+
+.userSigned{
+    right: 5%;
+    position: fixed;
+}
+
+.table-striped thead {
+    background-color: black!important;
+    color: white!important;
+}
+
+.table thead th {
+    vertical-align: middle!important;
+    text-align: center!important;
+}
+
+.table-striped a {
+    color: white!important;
+    text-decoration: none
 }
 
 #mainNav .navbar-brand:focus,
 #mainNav .navbar-brand:hover {
-    color: forestgreen
+    color: #2757d1
 }
 
 #mainNav .navbar-nav>li.nav-item>a.nav-link,
@@ -15,7 +40,7 @@
     font-size: .9rem;
     font-weight: 700;
     text-transform: uppercase;
-    color: black;
+    color: white;
 }
 
 #mainNav .navbar-nav>li.nav-item>a.nav-link:focus:hover,
@@ -49,8 +74,8 @@
 
 #mainNav .navbar-brand {
     font-weight: 700;
-    font-size: 10px;
-    color: black;
+    font-size: 20px;
+    color: white;
 }
 
 .alert {
