@@ -13,12 +13,15 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import django
+import django_heroku
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
 from django.utils.translation import gettext
 django.utils.translation.ugettext = gettext
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -31,7 +34,7 @@ DEBUG = True
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
-ALLOWED_HOSTS = ['0.0.0.0', "localhost"]
+ALLOWED_HOSTS = ['0.0.0.0', "localhost", '.herokuapp.com']
 
 USE_TZ = False
 
@@ -49,11 +52,20 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_tables2',
     'storages',
+    'whitenoise.runserver_nostatic',
+    'fontawesomefree'
 ]
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
+WHITENOISE_USE_FINDERS = True
+
+STATIC_ROOT = os.path.join(BASE_DIR,"/static/")
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -160,3 +172,5 @@ AWS_ACCESS_KEY_ID = 'AKIA2SCTLX5V6JWWZLOS'
 AWS_SECRET_KEY = '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'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_REGION_NAME = 'eu-west-2'
+
+django_heroku.settings(locals())
