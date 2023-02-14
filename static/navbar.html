@@ -1,24 +1,32 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
   <div class="container">
-      <div>
-          <a id="name" class="navbar-brand js-scroll-trigger" href="#page-top">Book Explorer</a>
-          <br />
-      </div>
-      <a class="icon navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fa fa-bars"></i>
-      </a>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-          <!-- <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link js-scroll-trigger" href=>About</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link js-scroll-trigger" href=>Contact</a>
-              </li>  
-            </ul> -->
-            <h3 class="userSigned">{{request.user.username}}</h3>
-      </div>
+    <img id="logo" class="d-inline-block mr-1" style="width: 65px; padding: 1%;" src="static/img/book-cover.png">
+    <div>
+      <a id="name" class="navbar-brand js-scroll-trigger" href="{% url 'login' %}">Book Explorer</a>
+      <br />
+    </div>
+    <a class="icon navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa fa-bars"></i>
+    </a>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      {% block content %}
+      <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+        <p class="logintext">{{request.user.username}}</p>
+        <li class="nav-item loginOut">
+          <a href="{% url 'logout' %}">Log Out</a>
+        </li>
+        {% else %}
+        <p class="logintext">You are not logged in</p>
+        <li class="nav-item loginOut">
+          <a href="{% url 'login' %}">login</a>
+        </li>
+        {% endif %}
+        {% endblock %}
+      </ul>
+    </div>
   </div>
 </nav>
