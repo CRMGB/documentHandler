@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from .aws_s3 import upload_csv_to_s3
 from .models import CSVFileModel, CSVRowsModel
-from .forms import CSVFileForm, CSVFileRowsForm, SimpleTable
+from .forms import CSVFileRowsForm, SimpleTable
 from csv import DictReader
 from io import TextIOWrapper
 
@@ -39,7 +39,7 @@ class UploadView(View):
                 messages.error(request, f"The book with the id '{row['book_id']}' is already present in the database.")
                 file_model.delete()
                 return redirect("csv_upload")
-            if is_valid_uuid(row.get("book_id"))==False:
+            if not is_valid_uuid(row.get("book_id")):
                 messages.error(request, f"The book with the id '{row['book_id']}' is wrong.")
                 return redirect("csv_upload")
             form = CSVFileRowsForm(row)
@@ -49,13 +49,16 @@ class UploadView(View):
             form = form.save(commit=False)
             form.file = file_model
             form.save()
-        upload_csv_to_s3(csv_file, row_count)
-        CSVFileModel.objects.filter(id=file_model.id).update(row_count=row_count)
-        csv_content = CSVRowsModel.objects.filter(file=file_model)
-        table = SimpleTable(csv_content)
+        table = self.send_to_s3_and_get_ready_table(row_count, csv_file, file_model)
         context = {'table': table, "row_count": str(row_count)}
         return render(request, 'csv_content.html', context)
 
+    def send_to_s3_and_get_ready_table(self, row_count, csv_file, file_model):
+        upload_csv_to_s3(csv_file, row_count)
+        file_model.row_count = row_count
+        file_model.save()
+        csv_content = CSVRowsModel.objects.filter(file=file_model)
+        return SimpleTable(csv_content)
 
 def csv_content(request, pk):
     """Display the csv selected on a table."""
