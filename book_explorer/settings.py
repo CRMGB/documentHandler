@@ -44,6 +44,8 @@ ALLOWED_HOSTS = ['0.0.0.0', "localhost", '.herokuapp.com']
 
 USE_TZ = False
 
+LOGOUT_REDIRECT_URL = '/login'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -162,6 +164,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+AUTH_PASSWORD_VALIDATORS=''
+AUTH_USERNAME_VALIDATORS=''
 
 USE_L10N = False
 
