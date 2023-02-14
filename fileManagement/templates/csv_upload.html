@@ -4,21 +4,41 @@
 {% load static %}
 
 <section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
-    <form method="POST" enctype="multipart/form-data" class="form-horizontal">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
-            <div class="col-md-10">
-                <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-md-offset-6">
+                <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name" class="col-md-3 col-sm-3 col-xs-12 control-label">File: </label>
+                        <div class="col-md-10">
+                            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+                            <button class="btn btn-primary" value="Submit" type="submit" onclick="showLoaderOnClick()">
+                                <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 col-sm-6 col-md-offset-6">
+                <h3>File history:</h3>
+                {% if files %}
+                {% for file in files %}
+                <div class="col-md-4 col-sm-4 col-md-offset-4">
+                    <a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.file_name |safe}}</a>
+                    <a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.row_count |safe}}</a>
+                </div>
+                {% endfor %}
+                {% else %}
+                    <h4>No files saved yet</h4>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
-                <button class="btn btn-primary" value="Submit" type="submit" onclick="showLoaderOnClick()">
-                    <span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload </button>
-            </div>
-        </div>
-    </form>
+
+        {% endif %}
 </section>
 {% load static %}
 {% endblock content %}
