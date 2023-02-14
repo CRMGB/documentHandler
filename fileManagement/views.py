@@ -1,4 +1,4 @@
-import typing as t
+import typing
 import uuid
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from typing import Any
@@ -11,9 +11,8 @@ from .models import UploadCSVFileModel
 from .forms import SimpleTable, UploadCSVFileForm
 from csv import DictReader
 from io import TextIOWrapper
-CRITICAL = 50
 
-RedirectOrResponse = t.Union[HttpResponseRedirect, HttpResponse]
+RedirectOrResponse = typing.Union[HttpResponseRedirect, HttpResponse]
 
 class UploadView(View):
 
@@ -29,14 +28,14 @@ class UploadView(View):
         for row in DictReader(rows):
             row_count += 1
             if is_valid_uuid(row.get("book_id"))==False:
-                messages.add_message(request, CRITICAL, f"The book with the id '{row['book_id']}' is wrong.")
+                messages.error(request, f"The book with the id '{row['book_id']}' is wrong.")
                 return redirect("csv_upload")
             if UploadCSVFileModel.objects.filter(book_id=row.get("book_id")).exists():
-                messages.add_message(request, CRITICAL, f"The book with the id '{row['book_id']}' is already present in the database.")
+                messages.error(request, f"The book with the id '{row['book_id']}' is already present in the database.")
                 return redirect("csv_upload")
             form = UploadCSVFileForm(row)
             if not form.is_valid():
-                messages.add_message(request, CRITICAL, str(form.errors))
+                messages.error(request, str(form.errors))
                 return redirect("csv_upload")
             form.save()
         upload_csv_to_s3(csv_file, row_count)

@@ -4,14 +4,23 @@
 {% load static %}
 
 {% load crispy_forms_tags %}
-<div class="container py-5">
-  <h1>Login</h1>
-  <form method="POST">
-    {% csrf_token %}
-    {{ login_form|crispy }}
-    <button class="btn btn-primary" type="submit">Login</button>
-  </form>
-  <p class="text-center">Don't have an account? <a href="/">Create an account</a>.</p>
-</div>
+<section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
+  <div class="container">
+    <h1>Login</h1>
+    <div class="row">
+      <div class="col-md-4">
+        <form method="POST">
+          {% csrf_token %}
+          {{ login_form|crispy }}
+          <button class="btn btn-primary" style="margin-top:5px" type="submit" onclick="showLoaderOnClick()">Login</button>
+        </form>
+      </div>
+      <div class="col-md-6" style="padding-left: 10%;">
+        <h3>Display the list of books from a CSV here and upload it to AWS S3!</h3><i class="fab fa-aws fa-3x"></i>
+      </div>
+    </div>
+    <p class="text-center">Don't have an account? <a href="/">Create an account</a>.</p>
+  </div>
+</section>
 {% load static %}
 {% endblock %}
