@@ -1,5 +1,7 @@
 from django.contrib import admin
 
-from .models import UploadCSVFileModel
+from .models import CSVRowsModel, CSVFileModel
 
-admin.site.register(UploadCSVFileModel)
+admin.site.register(CSVRowsModel)
+
+admin.site.register(CSVFileModel)
