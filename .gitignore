@@ -133,4 +133,4 @@ doc.pdf
 *.csv#
 static/admin/*
 static/django_tables2/*
-
+.env
