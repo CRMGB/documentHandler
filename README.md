@@ -23,6 +23,10 @@ NAME='book_explorer'
 USER='book_user'
 PASSWORD='book_password'
 HOST='localhost'
+
+BUCKET_NAME='Your bucket name'
+AWS_KEY_ID='Your aws key id'
+AWS_SECRET_KEY='Your aws secret key'
 ```
 
 3. Run:
@@ -56,9 +60,9 @@ Hosting url:
 
 Run Heroku db:
 
-    ```bash
-    heroku run su - postgres
-    ```
+```bash
+heroku run su - postgres
+```
     
 ## Improvements:
 - Make environments to run locally and to segregate the upload to S3.
