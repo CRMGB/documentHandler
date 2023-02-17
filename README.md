@@ -23,6 +23,7 @@ NAME='book_explorer'
 USER='book_user'
 PASSWORD='book_password'
 HOST='localhost'
+
 BUCKET_NAME='Your bucket name'
 AWS_KEY_ID='Your aws key id'
 AWS_SECRET_KEY='Your aws secret key'

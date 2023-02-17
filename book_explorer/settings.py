@@ -177,6 +177,7 @@ DATETIME_INPUT_FORMATS = ('%d/%m/%Y %H:%M:%S', '%d/%m/%Y %H:%M', '%d/%m/%Y',
                           '%d/%m/%y %H:%M:%S', '%d/%m/%y %H:%M', '%d/%m/%y',
                           '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d')
 
+
 AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_KEY_ID')
 AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
