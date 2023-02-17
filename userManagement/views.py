@@ -15,7 +15,7 @@ def register(request: HttpRequest)-> RedirectOrResponse:
 		if form.is_valid():
 			user = form.save()
 			auth.login(request, user)
-			messages.success(request, "Registration successful." )
+			messages.success(request, "Registration successful.")
 			return redirect("csv_upload")
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
