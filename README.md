@@ -2,14 +2,15 @@
 Django app to handle CSV uploads to S3 and more To test heroku locally
 
 ## How to run locally:
-!make sure you use a virtual environment and python!
-1.install dependencies from the requirements file:
+Make sure you use a virtual environment and python!
+
+1. Install dependencies from the requirements file:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. coment the line:
+2. comment the line:
 
 ```python
 # Needed for Heroku
@@ -38,9 +39,9 @@ python manage.py runserver
 ## How to run locally with heroku:
 - heroku local
 
-To deploy to Heroku:
+## How to deploy to Heroku:
 
-1. Uncoment the line if you commented it for locally setup:
+1. Uncomment the line if you commented it for locally setup:
 
 ```python
 # Needed for Heroku
@@ -63,8 +64,16 @@ Run Heroku db:
 heroku run su - postgres
 ```
     
+## How to set the .env credentials with Heroku
+
+```bash
+heroku config:set DB_NAME='<your dB name>'
+heroku config:set DB_PASSWORD='<your dB pass>'
+```
+...and so on
+
 ## Improvements:
 - Make environments to run locally and to segregate the upload to S3.
 - Have a way to sow the file on S3.
-- More design styling and functionality.
+- More design styling and functionality. 
 - Some unittest will be great!
