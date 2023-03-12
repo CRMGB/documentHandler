@@ -11,6 +11,7 @@ from .models import CSVFileModel, CSVRowsModel
 from .forms import CSVFileRowsForm, SimpleTable
 from csv import DictReader
 from io import TextIOWrapper
+from django.core.paginator import Paginator
 
 RedirectOrResponse = typing.Union[HttpResponseRedirect, HttpResponse]
 
@@ -19,7 +20,10 @@ class UploadView(View):
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
         """Display the upload template and display the files saved for the logged user."""
         files = CSVFileModel.objects.filter(user__id=self.request.user.id)
-        context = {"form": CSVFileRowsForm(), "files": files}
+        paginator = Paginator(files, 5)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {"form": CSVFileRowsForm(), "page_obj": page_obj, 'files':files}
         return render(request, "csv_upload.html", context)
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any)-> RedirectOrResponse:
@@ -68,6 +72,7 @@ def csv_content(request, pk):
     """Display the csv selected on a table."""
     if csv := CSVRowsModel.objects.filter(file__id=pk):
         table = SimpleTable(csv)
+        table.paginate(page=request.GET.get("page", 1), per_page=10)
         context = {'table': table}
         return render(request, 'csv_content.html', context)
     messages.error(request, f"The file with the id '{pk}' hasn't been found.")

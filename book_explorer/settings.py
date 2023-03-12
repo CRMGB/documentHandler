@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'fontawesomefree'
 ]
 
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
+
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
 WHITENOISE_USE_FINDERS = True
@@ -119,7 +121,7 @@ DATABASES = {
     }
 }
 # Needed for Heroku
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -156,7 +158,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, '..', 'static'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
