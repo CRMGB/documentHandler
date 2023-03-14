@@ -8,14 +8,19 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from .aws_s3 import upload_csv_to_s3
 from .models import CSVFileModel, CSVRowsModel
-from .forms import CSVFileRowsForm, SimpleTable
+from .forms import CSVFileRowsForm, SimpleTable, CSVTableFilter
+from django_tables2 import SingleTableView
 from csv import DictReader
 from io import TextIOWrapper
 from django.core.paginator import Paginator
+from django.views.generic import ListView
 
 RedirectOrResponse = typing.Union[HttpResponseRedirect, HttpResponse]
 
-class UploadView(View):
+class UploadView(ListView):
+    paginate_by = 1
+    model = CSVFileModel
+    template_name = "csv_upload.html"
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
         """Display the upload template and display the files saved for the logged user."""
@@ -68,15 +73,31 @@ class UploadView(View):
         csv_content = CSVRowsModel.objects.filter(file=file_model)
         return SimpleTable(csv_content)
 
-def csv_content(request, pk):
-    """Display the csv selected on a table."""
-    if csv := CSVRowsModel.objects.filter(file__id=pk):
-        table = SimpleTable(csv)
-        table.paginate(page=request.GET.get("page", 1), per_page=10)
-        context = {'table': table}
-        return render(request, 'csv_content.html', context)
-    messages.error(request, f"The file with the id '{pk}' hasn't been found.")
+class PagedFilteredTableView(SingleTableView):
+    filter_class = None
+    formhelper_class = None
+    context_filter_name = 'filter'
 
+    def get_queryset(self, **kwargs):
+        id = self.kwargs.get('pk')
+        if CSVRowsModel.objects.filter(file__id=id):
+            qs = super(PagedFilteredTableView, self).get_queryset().filter(file__id=self.kwargs['pk'])
+            self.filter = self.filter_class(self.request.GET, queryset=qs)
+            return self.filter.qs
+        messages.error(self.request, f"The file with the id '{id}' hasn't been found.")
+
+    def get_context_data(self, **kwargs):
+        print(kwargs)
+        context = super(PagedFilteredTableView, self).get_context_data(**kwargs)
+        context[self.context_filter_name] = self.filter
+        return context
+
+class DisplayCSVRowsListView(PagedFilteredTableView):
+    table_class = SimpleTable
+    model = CSVRowsModel
+    paginate_by = 5
+    template_name = "csv_content.html"
+    filter_class = CSVTableFilter
 
 def is_valid_uuid(val: uuid)->bool:
     try:

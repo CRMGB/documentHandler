@@ -1,10 +1,11 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
-#Django model utils TimeStampedModel
+# Django model utils TimeStampedModel
 class TimestampedModel(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
@@ -13,16 +14,11 @@ class CSVFileModel(models.Model):
     file_name = models.CharField(max_length=200)
     row_count = models.IntegerField(null=True)
     user = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        help_text="User owning this csv file",
-        null=True
+        User, on_delete=models.CASCADE, help_text="User owning this csv file", null=True
     )
 
     def __str__(self):
-        return 'File Name: %s.\n Row count: %s' % (
-            self.file_name, self.row_count
-        )
+        return "File Name: %s.\n Row count: %s" % (self.file_name, self.row_count)
 
 class CSVRowsModel(TimestampedModel):
     """Contents of the CSV file"""
@@ -32,11 +28,11 @@ class CSVRowsModel(TimestampedModel):
     date_published = models.DateField()
     book_id = models.CharField(unique=True, max_length=150)
     file = models.ForeignKey(
-        CSVFileModel, 
+        CSVFileModel,
         on_delete=models.CASCADE,
         help_text="File owning this row content",
         null=True,
-        blank=True
+        blank=True,
     )
 
     def __str__(self):

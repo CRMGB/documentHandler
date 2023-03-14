@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'fileManagement',
     'crispy_forms',
     'django_tables2',
+    'django_filters',
+    'django_bootstrap5',
     'storages',
     'whitenoise.runserver_nostatic',
     'fontawesomefree'
