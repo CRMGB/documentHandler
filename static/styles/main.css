@@ -15,7 +15,16 @@
   position: relative;
   margin: 1px;
 }
-
+.searchInput{
+  padding-right: unset!important;
+  padding-left: unset!important;
+  padding-bottom: 10px;
+}
+.inputForm {
+  padding-right: unset!important;
+  padding-left: unset!important;
+  /* padding-bottom: 10px; */
+}
 .table-striped thead {
   background-color: black !important;
   color: white !important;

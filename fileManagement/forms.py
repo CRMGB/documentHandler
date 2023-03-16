@@ -35,7 +35,7 @@ class SimpleTable(tables.Table):
             'class': 'table table-striped table-hover',
             "thead": {"class": "thead-dark"}
         }
-        exclude = ["id"]
+        exclude = ["id", "file"]
         order_by = 'updated'
 
 

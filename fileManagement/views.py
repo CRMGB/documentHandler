@@ -9,7 +9,7 @@ from django.views.generic.base import View
 from .aws_s3 import upload_csv_to_s3
 from .models import CSVFileModel, CSVRowsModel
 from .forms import CSVFileRowsForm, SimpleTable, CSVTableFilter
-from django_tables2 import SingleTableView
+from django_tables2 import SingleTableView, RequestConfig
 from csv import DictReader
 from io import TextIOWrapper
 from django.core.paginator import Paginator
@@ -55,6 +55,7 @@ class UploadView(ListView):
             form.save()
             form_rows.append(form)
         table = self.create_file_and_send_to_s3(row_count, csv_file, form_rows)
+        RequestConfig(request).configure(table)
         context = {'table': table, "row_count": str(row_count)}
         return render(request, 'csv_content.html', context)
 
