@@ -27,15 +27,19 @@
             <div class="col-md-8 col-sm-8 col-md-offset-8" style="text-align:center">
                 <h3>File history:</h3>
                 {% if files %}
+                <table class="table table table-dark table-hover">
+                    <tbody>
                 {% for file in files %}
-                <div >
-                    <a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.file_name |safe}}.</a> Number of rows: {{file.row_count |safe}}
-                </div>
+                <tr>
+                    <th scope="row" class="thead-dark"><a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.file_name |safe}}.</a></th>
+                    <td>Number of rows: {{file.row_count |safe}}</td>
+                    <td>AWS link: </td>
                 {% endfor %}
+                </tbody>
                 {% else %}
                 <h4>No page_obj saved yet</h4>
                 {% endif %}
-
+            </div>
                 {% if page_obj.has_other_pages %}
                 <div class="btn-group" role="group" aria-label="Item pagination" style="padding:10px;">
                     {% if page_obj.has_previous %}

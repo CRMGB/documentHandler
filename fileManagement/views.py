@@ -88,7 +88,6 @@ class PagedFilteredTableView(SingleTableView):
         messages.error(self.request, f"The file with the id '{id}' hasn't been found.")
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
         context = super(PagedFilteredTableView, self).get_context_data(**kwargs)
         context[self.context_filter_name] = self.filter
         return context

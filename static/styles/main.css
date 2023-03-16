@@ -35,6 +35,10 @@
   text-align: center !important;
 }
 
+.table a {
+  color: white !important;
+}
+
 .table-striped a {
   color: white !important;
   text-decoration: none;
