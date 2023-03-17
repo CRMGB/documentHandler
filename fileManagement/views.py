@@ -60,21 +60,24 @@ class UploadView(ListView):
         return render(request, 'csv_content.html', context)
 
     def create_file_and_send_to_s3(self, row_count: int, csv_file:HttpRequest, form_rows: list)-> SimpleTable:
-        """ Create the File instance after the rows have been validated and saved,
-        also make the fk association, send to s3 and display in django_tables2"""
+        """ send the file to s3, create the File instance after the rows have been validated and saved,
+        also make the fk association,  and display in django_tables2"""
+        file_name_s3 = upload_csv_to_s3(csv_file, row_count)
         file_model = CSVFileModel.objects.create(
             file_name=csv_file.name, 
             user=self.request.user,
-            row_count=row_count
+            row_count=row_count,
+            file_aws_s3_name=file_name_s3
         )
         for row in form_rows:
             row.file = file_model
-            row.save()      
-        upload_csv_to_s3(csv_file, row_count)
+            row.save()
         csv_content = CSVRowsModel.objects.filter(file=file_model)
         return SimpleTable(csv_content)
 
 class PagedFilteredTableView(SingleTableView):
+    """ Standard Viewset to paginate and filter the table but we select the file entry by:
+    get_queryset().filter(file__id=self.kwargs['pk'])"""
     filter_class = None
     formhelper_class = None
     context_filter_name = 'filter'
@@ -93,6 +96,8 @@ class PagedFilteredTableView(SingleTableView):
         return context
 
 class DisplayCSVRowsListView(PagedFilteredTableView):
+    """ This is the ViewSet called from the URLs and inheriting PagedFilteredTableView 
+    which will do all the work for us."""
     table_class = SimpleTable
     model = CSVRowsModel
     paginate_by = 5

@@ -28,12 +28,19 @@
                 <h3>File history:</h3>
                 {% if files %}
                 <table class="table table table-dark table-hover">
+                    <thead>
+                        <tr>
+                          <th scope="col">File Name</th>
+                          <th scope="col">Number of rows</th>
+                          <th scope="col">File name AWS S3</th>
+                        </tr>
+                      </thead>                    
                     <tbody>
                 {% for file in files %}
                 <tr>
                     <th scope="row" class="thead-dark"><a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.file_name |safe}}.</a></th>
                     <td>Number of rows: {{file.row_count |safe}}</td>
-                    <td>AWS link: </td>
+                    <td>{{file.file_aws_s3_name}}</td>
                 {% endfor %}
                 </tbody>
                 {% else %}

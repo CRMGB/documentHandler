@@ -12,6 +12,7 @@ class TimestampedModel(models.Model):
 
 class CSVFileModel(models.Model):
     file_name = models.CharField(max_length=200)
+    file_aws_s3_name = models.CharField(max_length=200, null=True)
     row_count = models.IntegerField(null=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, help_text="User owning this csv file", null=True
