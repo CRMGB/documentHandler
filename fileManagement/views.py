@@ -1,3 +1,4 @@
+import datetime
 import typing
 import uuid
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -7,16 +8,15 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from .aws_s3 import upload_csv_to_s3
 from .models import CSVFileModel, CSVRowsModel
-from .forms import CSVFileRowsForm, SimpleTable, CSVTableFilter
-from django_tables2 import SingleTableView
+from .forms import CSVFileRowsForm, TableFileCSV, TableRowsCSV, TableRowsCSVFilter, TableRowsFileFilter
+from django_tables2 import SingleTableView, RequestConfig
 from csv import DictReader
 from io import TextIOWrapper
-from django.core.paginator import Paginator
-from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 RedirectOrResponse = typing.Union[HttpResponseRedirect, HttpResponse]
 
-class UploadView(ListView):
+class UploadView(TemplateView):
     paginate_by = 1
     model = CSVFileModel
     template_name = "csv_upload.html"
@@ -24,14 +24,13 @@ class UploadView(ListView):
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
         """Display the upload template and display the files saved for the logged user."""
         try:
-            files = CSVFileModel.objects.filter(user__id=self.request.user.id)
-            paginator = Paginator(files, 5)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            context = {"form": CSVFileRowsForm(), "page_obj": page_obj, 'files':files}
+            table = TableFileCSV(CSVFileModel.objects.filter(user__id=self.request.user.id))
+            RequestConfig(request).configure(table)
+            context = {"form": CSVFileRowsForm(), 'table':table}
             return render(request, "csv_upload.html", context)
         except AttributeError as error:
             messages.error(request, f"Something bad happened! {error}")
+            return redirect("login")
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponseRedirect:
         """ POST method to Handle the CSV upload, checks whether the id is unique,
@@ -61,17 +60,21 @@ class UploadView(ListView):
             return redirect(f"csv_content/{file.id}")
         except AttributeError as error:
             messages.error(request, f"Something bad happened! {error}")
+            return redirect("csv_upload")
 
-    def create_file_and_send_to_s3(self, row_count: int, csv_file:HttpRequest, form_rows: list)-> SimpleTable:
+    def create_file_and_send_to_s3(self, row_count: int, csv_file:HttpRequest, form_rows: list)-> TableRowsCSV:
         """ send the file to s3, create the File instance after the rows have been validated and saved,
         also make the fk association,  and display in django_tables2"""
-        file_name_s3 = upload_csv_to_s3(csv_file, row_count)
         file_model = CSVFileModel.objects.create(
             file_name=csv_file.name, 
             user=self.request.user,
-            row_count=row_count,
-            file_aws_s3_name=file_name_s3
+            row_count=row_count
         )
+        now = datetime.datetime.now().strftime('%d-%m-%Y')
+        file_name_s3 = f"{file_model.id}_{row_count}_{now}"
+        upload_csv_to_s3(csv_file, file_name_s3)
+        file_model.file_aws_s3_name = file_name_s3
+        file_model.save()
         for row in form_rows:
             row.file = file_model
             row.save()
@@ -100,11 +103,11 @@ class PagedFilteredTableView(SingleTableView):
 class DisplayCSVRowsListView(PagedFilteredTableView):
     """ This is the ViewSet called from the URLs and inheriting PagedFilteredTableView 
     which will do all the work for us."""
-    table_class = SimpleTable
+    table_class = TableRowsCSV
     model = CSVRowsModel
     paginate_by = 5
     template_name = "csv_content.html"
-    filter_class = CSVTableFilter
+    filter_class = TableRowsCSVFilter
 
 def is_valid_uuid(val: uuid)->bool:
     try:

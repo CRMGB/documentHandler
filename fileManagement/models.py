@@ -1,16 +1,18 @@
+import uuid
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
 # Django model utils TimeStampedModel
-class TimestampedModel(models.Model):
+class BaseModel(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False, primary_key=True)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
 
-class CSVFileModel(models.Model):
+class CSVFileModel(BaseModel):
     file_name = models.CharField(max_length=200)
     file_aws_s3_name = models.CharField(max_length=200, null=True)
     row_count = models.IntegerField(null=True)
@@ -19,9 +21,9 @@ class CSVFileModel(models.Model):
     )
 
     def __str__(self):
-        return "File Name: %s.\n Row count: %s" % (self.file_name, self.row_count)
+        return "ID: %s.\n File Name: %s.\n Row count: %s" % (self.id, self.file_name, self.row_count)
 
-class CSVRowsModel(TimestampedModel):
+class CSVRowsModel(BaseModel):
     """Contents of the CSV file"""
     book_title = models.CharField(max_length=150)
     book_author = models.CharField(max_length=200)

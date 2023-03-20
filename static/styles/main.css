@@ -33,16 +33,22 @@
 .table thead th {
   vertical-align: middle !important;
   text-align: center !important;
+  padding: 20px!important;
 }
 
-.table a {
-  color: white !important;
+.table tbody tr a {
+  color:blue !important
+
 }
 
 .table-striped a {
   color: white !important;
   text-decoration: none;
 }
+
+table.table thead th.orderable { background: url('../img/sort_both.png') no-repeat center right; }
+table.table thead th.asc { background: url('../img/sort_asc.png') no-repeat center right; }
+table.table thead th.desc { background: url('../img/sort_desc.png') no-repeat center right; } */
 
 #mainNav .navbar-brand:focus,
 #mainNav .navbar-brand:hover {

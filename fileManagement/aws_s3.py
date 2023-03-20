@@ -8,15 +8,11 @@ from django.conf import settings
 
 logger = logging.getLogger('mylogger')
 
-def upload_csv_to_s3(file, row_count):
+def upload_csv_to_s3(file, file_name_s3):
     """Create the file name and convet to bytesIO before uploading to S3"""
-    id = uuid.uuid4()
-    now = datetime.datetime.now().strftime('%d-%m-%Y')
-    file_name_s3 = f"{id}_{row_count}_{now}"
     logger.info(f"Uploading the file '{file_name_s3}'")
     file_ready = get_ready_the_file(file)
-    save_csv_to_s3(file_ready, file_name_s3, now)
-    return file_name_s3
+    save_csv_to_s3(file_ready, file_name_s3)
 
 def get_ready_the_file(file):
     """Convert to ByesIO otherwise will be empty when downloading"""
@@ -30,9 +26,9 @@ def get_ready_the_file(file):
     file_to_upload.seek(0)
     return file_to_upload
 
-def save_csv_to_s3(file, file_name, now):
+def save_csv_to_s3(file, file_name):
     """Method using Boto3 to upload the csv file."""
-    prefix = now
+    prefix = datetime.datetime.now().strftime('%d-%m-%Y')
     try:
         get_s3_creds(boto3.client).upload_fileobj(
             file,

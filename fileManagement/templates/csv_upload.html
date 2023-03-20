@@ -3,6 +3,8 @@
 {% block content %}
 {% load static %}
 
+{% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
 <section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
     <div class="container">
         <div class="row">
@@ -26,52 +28,35 @@
             </div>
             <div class="col-md-8 col-sm-8 col-md-offset-8" style="text-align:center">
                 <h3>File history:</h3>
-                {% if files %}
-                <table class="table table table-dark table-hover">
-                    <thead>
-                        <tr>
-                          <th scope="col">File Name</th>
-                          <th scope="col">Number of rows</th>
-                          <th scope="col">File name AWS S3</th>
-                        </tr>
-                      </thead>                    
-                    <tbody>
-                {% for file in files %}
-                <tr>
-                    <th scope="row" class="thead-dark"><a class="text-justify" href="{% url 'csv_content' file.id %}">{{file.file_name |safe}}.</a></th>
-                    <td>Number of rows: {{file.row_count |safe}}</td>
-                    <td>{{file.file_aws_s3_name}}</td>
-                {% endfor %}
-                </tbody>
-                {% else %}
-                <h4>No page_obj saved yet</h4>
-                {% endif %}
-            </div>
-                {% if page_obj.has_other_pages %}
-                <div class="btn-group" role="group" aria-label="Item pagination" style="padding:10px;">
-                    {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
-                    {% endif %}
-
-                    {% for page_number in page_obj.paginator.page_range %}
-                    {% if page_obj.number == page_number %}
-                    <button class="btn btn-outline-primary active">
-                        <span>{{ page_number }} <span class="sr-only">(current)</span></span>
-                    </button>
-                    {% else %}
-                    <a href="?page={{ page_number }}" class="btn btn-outline-primary">
-                        {{ page_number }}
-                    </a>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
-                    {% endif %}
+                <div class="row">
+                    {% render_table table %}
                 </div>
+            </div>
+            {% if page_obj.has_other_pages %}
+            <div class="btn-group" role="group" aria-label="Item pagination" style="padding:10px;">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
+                {% endif %}
+
+                {% for page_number in page_obj.paginator.page_range %}
+                {% if page_obj.number == page_number %}
+                <button class="btn btn-outline-primary active">
+                    <span>{{ page_number }} <span class="sr-only">(current)</span></span>
+                </button>
+                {% else %}
+                <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                    {{ page_number }}
+                </a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
+    </div>
     </div>
 
 </section>
