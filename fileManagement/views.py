@@ -8,7 +8,8 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from .aws_s3 import upload_csv_to_s3
 from .models import CSVFileModel, CSVRowsModel
-from .forms import CSVFileRowsForm, TableFileCSV, TableRowsCSV, TableRowsCSVFilter, TableRowsFileFilter
+from .forms import CSVFileRowsForm
+from .tables import TableFileCSV, TableRowsCSV, TableRowsCSVFilter
 from django_tables2 import SingleTableView, RequestConfig
 from csv import DictReader
 from io import TextIOWrapper
@@ -26,6 +27,7 @@ class UploadView(TemplateView):
         try:
             table = TableFileCSV(CSVFileModel.objects.filter(user__id=self.request.user.id))
             RequestConfig(request).configure(table)
+            table.paginate(page=request.GET.get("page", 1), per_page=4)
             context = {"form": CSVFileRowsForm(), 'table':table}
             return render(request, "csv_upload.html", context)
         except AttributeError as error:
