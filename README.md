@@ -73,7 +73,7 @@ heroku config:set DB_PASSWORD='<your dB pass>'
 ...and so on
 
 ## Improvements:
-- Make environments to run locally and to segregate the upload to S3.
 - Have a way to sow the file on S3.
 - More design styling and functionality. 
 - Some unittest will be great!
+- Delete files from the UI and in S3
