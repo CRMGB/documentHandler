@@ -1,6 +1,7 @@
 import datetime
 import typing
 import uuid
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from typing import Any
 from django.contrib import messages
@@ -22,18 +23,20 @@ class UploadView(TemplateView):
     model = CSVFileModel
     template_name = "csv_upload.html"
 
+    # @login_required
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
         """Display the upload template and display the files saved for the logged user."""
         try:
             table = TableFileCSV(CSVFileModel.objects.filter(user__id=self.request.user.id))
             RequestConfig(request).configure(table)
-            table.paginate(page=request.GET.get("page", 1), per_page=4)
+            table.paginate(page=request.GET.get("page", 1), per_page=3)
             context = {"form": CSVFileRowsForm(), 'table':table}
             return render(request, "csv_upload.html", context)
         except AttributeError as error:
             messages.error(request, f"Something bad happened! {error}")
             return redirect("login")
 
+    # @login_required
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponseRedirect:
         """ POST method to Handle the CSV upload, checks whether the id is unique,
             If there is not an error, save the content and display it in the csv_content template"""        
@@ -64,6 +67,7 @@ class UploadView(TemplateView):
             messages.error(request, f"Something bad happened! {error}")
             return redirect("csv_upload")
 
+    # @login_required
     def create_file_and_send_to_s3(self, row_count: int, csv_file:HttpRequest, form_rows: list)-> TableRowsCSV:
         """ send the file to s3, create the File instance after the rows have been validated and saved,
         also make the fk association,  and display in django_tables2"""
@@ -89,6 +93,7 @@ class PagedFilteredTableView(SingleTableView):
     formhelper_class = None
     context_filter_name = 'filter'
 
+    # @login_required
     def get_queryset(self, **kwargs):
         id = self.kwargs.get('pk')
         if CSVRowsModel.objects.filter(file__id=id):
@@ -97,6 +102,7 @@ class PagedFilteredTableView(SingleTableView):
             return self.filter.qs
         messages.error(self.request, f"The file with the id '{id}' hasn't been found.")
 
+    # @login_required
     def get_context_data(self, **kwargs):
         context = super(PagedFilteredTableView, self).get_context_data(**kwargs)
         context[self.context_filter_name] = self.filter
