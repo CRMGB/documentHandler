@@ -5,8 +5,9 @@ var Drop = Dropzone.options.DidDropzone = {
   maxFilesize: 0.5, // Maximum size of file that you will allow (MB)
   clickable: true, // This allows the dropzone to select images onclick
   acceptedFiles: '.csv', //accepted file types
-  maxFiles: 10, //Maximum number of files/images in dropzone
+  maxFiles: 1, //Maximum number of files/images in dropzone
   parallelUploads: 10,
+  addRemoveLinks: true,
   // previewTemplate: '<div class="dz-preview dz-image-preview">'+
   //                     '<div class="dz-image">'+
   //                     '<img data-dz-thumbnail />'+
@@ -21,30 +22,34 @@ var Drop = Dropzone.options.DidDropzone = {
   //                   '<div class="dz-error-mark"><span>✘</span></div>'+
   //                   '<div class="dz-error-message"><span data-dz-errormessage></span></div>'+
   //                 '</div>',
-  init: function(){
-      console.log("Hellooooo!!!!!")      
-      var submitButton = document.querySelector("#drop_csv")
-      var url = $('#DidDropzone').attr("action")
-      myDropzone = this;
-      console.log("Hellooooo!!!!!", submitButton)
-      //process the queued images on click
-      submitButton.addEventListener("click", function() {
-          myDropzone.processQueue(); 
-      });
+  init: function () {
+    // add a close button
+    // Create the remove button
+    // var removeButton = Dropzone.createElement("<a class='boxclose' id='boxclose'></a>")
 
-      //fire the images to url
-      myDropzone.on("processing", function(file) {
-        myDropzone.options.url = url;
-      });
+    // const dropArea = document.querySelector(".dropzone");
+    // let button = `<a class="boxclose" id="boxclose"></a>`;
+    // dropArea.innerHTML = button;
+    var submitButton = document.querySelector("#drop_csv")
+    var url = $('#DidDropzone').attr("action")
+    myDropzone = this;
+    
+    //process the queued images on click
+    submitButton.addEventListener("click", function () {
+      myDropzone.processQueue();
+    });
 
-      //clear the dropzone when complete
-      myDropzone.on("complete", function(file) {
-          myDropzone.removeFile(file);
-      });
-  },
-  success: function(file, json){
+    //fire the images to url
+    myDropzone.on("processing", function (file) {
+      myDropzone.options.url = url;
+    });
 
-      // alert("Perfect! Now visit your gallery...")      
-      
+    // clear the dropzone when complete
+    myDropzone.on("complete", function (file) {
+      myDropzone.removeFile(file);
+    });
+    myDropzone.on("success", function (file, response) {
+      window.location.href = "csv_upload"
+    });
   },
 }

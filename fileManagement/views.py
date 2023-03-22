@@ -1,7 +1,6 @@
 import datetime
 import typing
 import uuid
-from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from typing import Any
 from django.contrib import messages
@@ -18,61 +17,89 @@ from django.views.generic import TemplateView
 
 RedirectOrResponse = typing.Union[HttpResponseRedirect, HttpResponse]
 
+
 class UploadView(TemplateView):
     paginate_by = 1
     model = CSVFileModel
     template_name = "csv_upload.html"
 
     # @login_required
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponse:
-        """Display the upload template and display the files saved for the logged user."""
+    def get(
+            self, request: HttpRequest, *args: Any, **kwargs: Any
+            ) -> HttpResponse:
+        """Display the upload template and display the files saved for 
+        the logged user."""
         try:
-            table = TableFileCSV(CSVFileModel.objects.filter(user__id=self.request.user.id))
-            RequestConfig(request).configure(table)
-            table.paginate(page=request.GET.get("page", 1), per_page=3)
-            context = {"form": CSVFileRowsForm(), 'table':table}
+            table = self.generate_table(request)
+            context = {"form": CSVFileRowsForm(), 'table': table}
             return render(request, "csv_upload.html", context)
         except AttributeError as error:
             messages.error(request, f"Something bad happened! {error}")
             return redirect("login")
 
     # @login_required
-    def post(self, request: HttpRequest, *args: Any, **kwargs: Any)-> HttpResponseRedirect:
-        """ POST method to Handle the CSV upload, checks whether the id is unique,
-            If there is not an error, save the content and display it in the csv_content template"""        
-        
-        form_rows:list = []
-        row_count:int = 0
+    def post(
+            self, request: HttpRequest, *args: Any, **kwargs: Any
+            ) -> HttpResponseRedirect:
+        """ POST method to Handle the CSV upload, checks whether the
+        id is unique, If there is not an error, save the content and
+        display it in the csv_content template"""
+
+        form_rows: list = []
+        row_count: int = 0
         try:
             csv_file = request.FILES.get("csv_file")
             rows = TextIOWrapper(csv_file, encoding="utf-8", newline="")
             for row in DictReader(rows):
                 row_count += 1
                 if CSVRowsModel.objects.filter(book_id=row.get("book_id")).exists():
-                    messages.error(request, f"The book with the id '{row['book_id']}' is already present in the database.")
+                    messages.error(
+                        request,
+                        f"The book with the id '{row['book_id']}' is already present."
+                    )
                     return redirect("csv_upload")
                 if not is_valid_uuid(row.get("book_id")):
-                    messages.error(request, f"The book with the id '{row['book_id']}' is wrong.")
+                    messages.error(
+                        request,
+                        f"The book with the id '{row['book_id']}' is wrong."
+                        )
                     return redirect("csv_upload")
                 form = CSVFileRowsForm(row)
                 if not form.is_valid():
                     messages.error(request, str(form.errors))
                     return redirect("csv_upload")
                 form = form.save(commit=False)
-                form.save()
                 form_rows.append(form)
-            file = self.create_file_and_send_to_s3(row_count, csv_file, form_rows)
-            return redirect(f"csv_content/{file.id}")
+            file = self.create_file_and_send_to_s3(
+                row_count, csv_file, form_rows
+                )
+            form.save()
+            messages.success(
+                request, f"File successfully uploaded! {file.name}"
+                )
+            table = self.generate_table(request)
+            context = {"form": CSVFileRowsForm(), 'table': table}
+            return render(request, "csv_upload.html", context)
         except AttributeError as error:
             messages.error(request, f"Something bad happened! {error}")
             return redirect("csv_upload")
 
+    def generate_table(self, request: HttpRequest):
+        table = TableFileCSV(CSVFileModel.objects.filter(
+            user__id=self.request.user.id
+        ))
+        RequestConfig(request).configure(table)
+        return table.paginate(page=request.GET.get("page", 1), per_page=3)
+
     # @login_required
-    def create_file_and_send_to_s3(self, row_count: int, csv_file:HttpRequest, form_rows: list)-> TableRowsCSV:
-        """ send the file to s3, create the File instance after the rows have been validated and saved,
-        also make the fk association,  and display in django_tables2"""
+    def create_file_and_send_to_s3(
+            self, row_count: int, csv_file: HttpRequest, form_rows: list
+            ) -> TableRowsCSV:
+        """ send the file to s3, create the File instance after the rows
+        have been validated and saved, also make the fk association,
+        and display in django_tables2"""
         file_model = CSVFileModel.objects.create(
-            file_name=csv_file.name, 
+            file_name=csv_file.name,
             user=self.request.user,
             row_count=row_count
         )
@@ -86,6 +113,7 @@ class UploadView(TemplateView):
             row.save()
         return file_model
 
+
 class PagedFilteredTableView(SingleTableView):
     """ Standard Viewset to paginate and filter the table but we select the file entry by:
     get_queryset().filter(file__id=self.kwargs['pk'])"""
@@ -96,11 +124,15 @@ class PagedFilteredTableView(SingleTableView):
     # @login_required
     def get_queryset(self, **kwargs):
         id = self.kwargs.get('pk')
-        if CSVRowsModel.objects.filter(file__id=id):
-            qs = super(PagedFilteredTableView, self).get_queryset().filter(file__id=self.kwargs['pk'])
+        if CSVFileModel.objects.filter(id=id):
+            qs = super(PagedFilteredTableView, self).get_queryset().filter(
+                file__id=self.kwargs['pk']
+            )
             self.filter = self.filter_class(self.request.GET, queryset=qs)
             return self.filter.qs
-        messages.error(self.request, f"The file with the id '{id}' hasn't been found.")
+        messages.error(
+            self.request, f"The file with the id '{id}' hasn't been found."
+        )
 
     # @login_required
     def get_context_data(self, **kwargs):
@@ -108,16 +140,18 @@ class PagedFilteredTableView(SingleTableView):
         context[self.context_filter_name] = self.filter
         return context
 
+
 class DisplayCSVRowsListView(PagedFilteredTableView):
-    """ This is the ViewSet called from the URLs and inheriting PagedFilteredTableView 
-    which will do all the work for us."""
+    """ This is the ViewSet called from the URLs and inheriting 
+    PagedFilteredTableView which will do all the work for us."""
     table_class = TableRowsCSV
     model = CSVRowsModel
     paginate_by = 5
     template_name = "csv_content.html"
     filter_class = TableRowsCSVFilter
 
-def is_valid_uuid(val: uuid)->bool:
+
+def is_valid_uuid(val: uuid) -> bool:
     try:
         uuid.UUID(str(val))
         return True

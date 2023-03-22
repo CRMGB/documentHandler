@@ -181,11 +181,9 @@ table.table thead th.desc { background: url('../img/sort_desc.png') no-repeat ce
   .dropzone{
     box-sizing: content-box!important;
   }
-  .drag-image {
+ .drag-image {
     background-color: black;
     border: 1px dashed #fff;
-    /* height: 300px;
-    width: 350px; */
     border-radius: 5px;
     font-weight:400;
     display: flex;
@@ -193,14 +191,14 @@ table.table thead th.desc { background: url('../img/sort_desc.png') no-repeat ce
     justify-content: center;
     flex-direction: column;
   }
-  .drag-image.active{
+   .drag-image.active{
     border: 2px solid #fff;
   }
   .drag-image .icon{
     font-size: 30px;
     color: #fff;
   }
-  .drag-image h6{
+   .drag-image h6{
     font-size: 20px;
     font-weight: 300;
     color: #fff;
@@ -208,7 +206,6 @@ table.table thead th.desc { background: url('../img/sort_desc.png') no-repeat ce
   .drag-image span{
     font-size: 14px;
     font-weight: 300;
-    color: #fff;
     margin: 10px 0 15px 0;
   }
   .drag-image button{
@@ -241,19 +238,13 @@ table.table thead th.desc { background: url('../img/sort_desc.png') no-repeat ce
   color: white!important;
 }
 
-/* .dz-message{
-  display:inline-block;
-  color:#444;
-  border:1px solid #CCC;
-  background:none;
-  box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-  cursor:pointer;
-  vertical-align:middle;
-  max-width: 100px;
-  padding: 5px;
-  text-align: center;
-} */
+.dropzone .dz-preview .dz-progress {
+  position: relative!important;
+}
 
+.dz-remove {
+  font-size: 1.2rem!important;
+}
 
 .iconMessage, .dropMessage{
   margin: 5px!important;
