@@ -3,7 +3,12 @@
   <div class="container">
     <img id="logo" class="d-inline-block mr-1" style="width: 65px; padding: 1%;" src="static/img/book-cover.png">
     <div>
+      {% block content %}
+      {% if user.is_authenticated %}
+      <a id="name" class="navbar-brand js-scroll-trigger" href="{% url 'csv_upload' %}">Book Explorer</a>
+      {% else %}
       <a id="name" class="navbar-brand js-scroll-trigger" href="{% url 'login' %}">Book Explorer</a>
+      {% endif %}
       <br />
     </div>
     <a class="icon navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -12,7 +17,6 @@
     </a>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      {% block content %}
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
         <p class="logintext">{{request.user.username}}</p>

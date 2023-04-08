@@ -1,8 +1,11 @@
 {% extends "main.html" %}
-{% load django_tables2 %}
 
 {% block content %}
 {% load static %}
+
+{% load render_table from django_tables2 %}
+{% load django_bootstrap5 %}
+
 <section class="section mt-5 d-flex align-items-center justify-content-center" style="height:100vh;">
   <div class="container">
     <div class="row">
@@ -11,8 +14,23 @@
       {% endif %}
     </div>
     <div class="row">
+      {% if filter %}
+      <form action="" method="search" class="form form-inline">
+        <div class="searchInput">
+        {% bootstrap_form filter.form layout='inline' %}
+        </div>
+        <div class="col-md-4 col-sm-4 col-md-offset-4">
+          {% bootstrap_button 'filter' %}
+        </div>
+      </form>
+      {% endif %}    
+    </div>
+    <div class="row">
       {% render_table table %}
     </div>
+    <div class="container text-center">
+      <a href="{% url 'csv_upload' %}" class="btn btn-primary" role="button">Back to CSV upload</a>
+   </div>    
 </section>
 {% load static %}
 {% endblock content %}

@@ -12,7 +12,8 @@
         <form method="POST">
           {% csrf_token %}
           {{ login_form|crispy }}
-          <button class="btn btn-primary" style="margin-top:5px" type="submit" onclick="showLoaderOnClick()">Login</button>
+          <button class="btn btn-primary" style="margin-top:5px" type="submit"
+            onclick="showLoaderOnClick()">Login</button>
         </form>
       </div>
       <div class="col-md-6" style="padding-left: 10%;">
