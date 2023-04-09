@@ -1,0 +1,255 @@
+#mainNav .navbar-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: forestgreen;
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.fixed-top {
+  background-color: black;
+  color: white;
+}
+
+.logintext {
+  right: 15%;
+  position: relative;
+  margin: 1px;
+}
+.searchInput{
+  padding-right: unset!important;
+  padding-left: unset!important;
+  padding-bottom: 10px;
+}
+.inputForm {
+  padding-right: unset!important;
+  padding-left: unset!important;
+  /* padding-bottom: 10px; */
+}
+.table-striped thead {
+  background-color: black !important;
+  color: white !important;
+}
+
+.table thead th {
+  vertical-align: middle !important;
+  text-align: center !important;
+  padding: 20px!important;
+}
+
+.table tbody tr a {
+  color:blue !important
+
+}
+
+.table-striped a {
+  color: white !important;
+  text-decoration: none;
+}
+
+table.table thead th.orderable { background: url("../img/sort_both.3602c19ab94a.png") no-repeat center right; }
+table.table thead th.asc { background: url("../img/sort_asc.1850c133a6f8.png") no-repeat center right; }
+table.table thead th.desc { background: url("../img/sort_desc.de9c29133c42.png") no-repeat center right; } */
+
+#mainNav .navbar-brand:focus,
+#mainNav .navbar-brand:hover {
+  color: #2757d1;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus:hover,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:hover {
+  color: #2757d1 !important;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus.active {
+  color: #2757d1 !important;
+}
+
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover,
+#mainNav .navbar-nav > li.nav-item > a.nav-link:focus.active:hover {
+  background-color: transparent;
+}
+
+@media (min-width: 992px) {
+  #mainNav.navbar-shrink .navbar-nav > li.arrow > a.arrow1,
+  #mainNav.navbar-shrink .navbar-nav > li.arrow > a.arrow1:focus {
+    color: #3bd23b;
+  }
+}
+
+@media (min-width: 992px) {
+  #mainNav .navbar-nav > li.arrow > a.arrow1,
+  #mainNav .navbar-nav > li.arrow > a.arrow1:focus {
+    color: blue;
+  }
+}
+
+#mainNav .navbar-brand {
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+}
+.Cbutton {
+  position: sticky !important;
+  bottom: 100% !important;
+  transform: translateX(-50%) !important;
+}
+
+.alert {
+  position: fixed !important;
+  bottom: 5px !important;
+  left: 2% !important;
+  width: 96% !important;
+
+  border-color: #ebccd1;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.errorMessage {
+  color: #a94442;
+  background-color: #f2dede;
+}
+
+.successMessage {
+  color: #54b861;
+  background-color: #def2e6;
+}
+
+.loginOut {
+  right: 5% !important;
+  position: relative;
+}
+
+.close {
+  text-decoration: none;
+}
+
+.section {
+  height: 90vh !important;
+}
+
+/* Loader */
+
+.preload {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 45%;
+    left: 45%;
+  } 
+.bars-1 {
+    width: 45px;
+    aspect-ratio: 1;
+    --c: no-repeat linear-gradient(#000 0 0);
+    background: 
+      var(--c) 0%   50%,
+      var(--c) 50%  50%,
+      var(--c) 100% 50%;
+    background-size: 20% 100%;
+    animation: b1 1s infinite linear;
+  }
+  @keyframes b1 {
+    0%  {background-size: 20% 100%,20% 100%,20% 100%}
+    33% {background-size: 20% 10% ,20% 100%,20% 100%}
+    50% {background-size: 20% 100%,20% 10% ,20% 100%}
+    66% {background-size: 20% 100%,20% 100%,20% 10% }
+    100%{background-size: 20% 100%,20% 100%,20% 100%}
+  }
+
+  /* Drag file */
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  .dropzone{
+    box-sizing: content-box!important;
+  }
+ .drag-image {
+    background-color: black;
+    border: 1px dashed #fff;
+    border-radius: 5px;
+    font-weight:400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+   .drag-image.active{
+    border: 2px solid #fff;
+  }
+  .drag-image .icon{
+    font-size: 30px;
+    color: #fff;
+  }
+   .drag-image h6{
+    font-size: 20px;
+    font-weight: 300;
+    color: #fff;
+  }
+  .drag-image span{
+    font-size: 14px;
+    font-weight: 300;
+    margin: 10px 0 15px 0;
+  }
+  .drag-image button{
+    padding: 10px 25px;
+    font-size: 14px; 
+    font-weight: 300;
+    border: none;
+    outline: none;
+    background:transparent;
+    color: #fff;
+    border:1px solid #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition:all 0.5s;
+  }
+  
+  .drag-image button:hover{
+      background-color:#fff;
+      color:red;
+  }
+  
+  .drag-image img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+.dz-message{
+  color: white!important;
+}
+
+.dropzone .dz-preview .dz-progress {
+  position: relative!important;
+}
+
+.dz-remove {
+  font-size: 1.2rem!important;
+}
+
+.iconMessage, .dropMessage{
+  margin: 5px!important;
+}
+
+.colButton{
+  padding: 10px;
+}
